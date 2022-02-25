@@ -65,9 +65,6 @@ def check_response(response):
     except Exception as error:
         error_message = f'Работ по ключу "homeworks" не найдено {error}'
         logger.error(error_message)
-    if 'homeworks' not in response:
-        logger.error('Отсутствует ключ homeworks')
-        raise KeyError('Отсутствует ключ homeworks')
     if not isinstance(response['homeworks'], list):
         logger.error('Ответ API не соответствует ожиданиям')
         raise TypeError('Ответ API не соответствует ожиданиям')
