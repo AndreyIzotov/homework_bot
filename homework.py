@@ -33,7 +33,7 @@ HOMEWORK_STATUSES = {
 
 
 def send_message(bot, message):
-    """Отправка сообщения"""
+    """Отправка сообщения."""
     try:
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
     except Exception as error:
@@ -41,9 +41,8 @@ def send_message(bot, message):
         logger.error(error_message)
 
 
-
 def get_api_answer(current_timestamp):
-    """Проверка от вета API"""
+    """Проверка от вета API."""
     timestamp = current_timestamp or int(time.time())
     params = {'from_date': timestamp}
     try:
@@ -60,7 +59,7 @@ def get_api_answer(current_timestamp):
 
 
 def check_response(response):
-    """Проверка ответа сервера"""
+    """Проверка ответа сервера."""
     try:
         homework = response['homeworks']
     except Exception as error:
@@ -76,7 +75,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    """Проверка статуса работ"""
+    """Проверка статуса работ."""
     homework_name = homework['homework_name']
     homework_status = homework['status']
     if homework_name is None or homework_status is None:
@@ -92,7 +91,7 @@ def parse_status(homework):
 
 
 def check_tokens():
-    """Проверка локальных токенов"""
+    """Проверка локальных токенов."""
     tokens = all([
         PRACTICUM_TOKEN,
         TELEGRAM_TOKEN,
