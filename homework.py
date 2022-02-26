@@ -1,6 +1,8 @@
 import logging
 import os
 import time
+from http import HTTPStatus
+
 import requests
 import telegram
 from dotenv import load_dotenv
@@ -47,7 +49,7 @@ def get_api_answer(current_timestamp):
     params = {'from_date': timestamp}
     try:
         response = requests.get(ENDPOINT, headers=HEADERS, params=params)
-        if response.status_code != 200:
+        if response.status_code != HTTPStatus.OK:
             logger.error('Код ответа != 200')
             raise ConnectionError('Ошибка статуса ответа от API')
     except Exception as error:
