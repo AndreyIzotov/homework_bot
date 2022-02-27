@@ -78,14 +78,14 @@ def parse_status(homework):
     """Проверка статуса работ."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
-    if homework_name is None or homework_status is None:
-        error_message = 'Ответ сервера не соответствует ожиданиям'
-        logger.error(error_message)
-        raise ValueError(error_message)
     if homework_status not in HOMEWORK_STATUSES.keys():
         error_message = 'Неверное значение статуса работы'
         logger.error(error_message)
         raise KeyError(error_message)
+    if homework_name is None or homework_status is None:
+        error_message = 'Ответ сервера не соответствует ожиданиям'
+        logger.error(error_message)
+        raise ValueError(error_message)
     verdict = HOMEWORK_STATUSES[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
