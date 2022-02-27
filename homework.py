@@ -68,15 +68,16 @@ def check_response(response):
         error_message = f'Работ по ключу "homeworks" не найдено {error}'
         logger.error(error_message)
     if not isinstance(response['homeworks'], list):
-        logger.error('Ответ API не соответствует ожиданиям')
-        raise TypeError('Ответ API не соответствует ожиданиям')
+        error_message = 'Ответ API не соответствует ожиданиям'
+        logger.error(error_message)
+        raise TypeError(error_message)
     return homework
 
 
 def parse_status(homework):
     """Проверка статуса работ."""
-    homework_name = homework['homework_name']
-    homework_status = homework['status']
+    homework_name = homework.get('homework_name')
+    homework_status = homework.get('status')
     if homework_name is None or homework_status is None:
         error_message = 'Ответ сервера не соответствует ожиданиям'
         logger.error(error_message)
@@ -118,6 +119,7 @@ def main():
             time.sleep(RETRY_TIME)
         except Exception as error:
             err_message = f'Сбой в работе программы: {error}'
+            send_message(bot, err_message)
             logger.error(err_message)
             time.sleep(RETRY_TIME)
 
