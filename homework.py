@@ -37,10 +37,11 @@ HOMEWORK_STATUSES = {
 def send_message(bot, message):
     """Отправка сообщения."""
     try:
-        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+        bot_message = bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
     except Exception as error:
         error_message = f'Ошибка при отправке сообщения: {error}'
         logger.error(error_message)
+    return bot_message
 
 
 def get_api_answer(current_timestamp):
@@ -62,16 +63,17 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка ответа сервера."""
-    try:
-        homework = response['homeworks']
-    except Exception as error:
-        error_message = f'Работ по ключу "homeworks" не найдено {error}'
-        logger.error(error_message)
-    if not isinstance(response['homeworks'], list):
-        error_message = 'Ответ API не соответствует ожиданиям'
-        logger.error(error_message)
+    if not isinstance(response['homeworks'], list): 
+        error_message = 'Ответ API не соответствует ожиданиям' 
+        logger.error(error_message) 
         raise TypeError(error_message)
-    return homework
+    try:
+        homeworks = response['homeworks']
+    except Exception as error:
+        error_message = f'Работ по ключу homeworks не найдено {error}'
+        logger.error(error_message)
+        raise KeyError(error_message)
+    return homeworks
 
 
 def parse_status(homework):
@@ -118,9 +120,10 @@ def main():
                                              current_timestamp)
             time.sleep(RETRY_TIME)
         except Exception as error:
-            err_message = f'Сбой в работе программы: {error}'
-            send_message(bot, err_message)
-            logger.error(err_message)
+            error_message = f'Сбой в работе программы: {error}'
+            if send_message(bot, error_message):
+                send_message(bot, error_message)
+                logger.error(error_message)
             time.sleep(RETRY_TIME)
 
 
