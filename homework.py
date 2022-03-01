@@ -123,7 +123,6 @@ def main():
             error_message = f'Сбой в работе программы: {error}'
             result = send_message(bot, error_message)
             if result:
-                send_message(bot, error_message)
                 logger.error(error_message)
             time.sleep(RETRY_TIME)
 
