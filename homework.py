@@ -63,9 +63,9 @@ def get_api_answer(current_timestamp):
 
 def check_response(response):
     """Проверка ответа сервера."""
-    if not isinstance(response['homeworks'], list): 
-        error_message = 'Ответ API не соответствует ожиданиям' 
-        logger.error(error_message) 
+    if not isinstance(response['homeworks'], list):
+        error_message = 'Ответ API не соответствует ожиданиям'
+        logger.error(error_message)
         raise TypeError(error_message)
     try:
         homeworks = response['homeworks']
