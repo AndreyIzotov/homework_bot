@@ -37,11 +37,11 @@ HOMEWORK_STATUSES = {
 def send_message(bot, message):
     """Отправка сообщения."""
     try:
-        bot_message = bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
+        return True
     except Exception as error:
         error_message = f'Ошибка при отправке сообщения: {error}'
         logger.error(error_message)
-    return bot_message
 
 
 def get_api_answer(current_timestamp):
@@ -121,7 +121,8 @@ def main():
             time.sleep(RETRY_TIME)
         except Exception as error:
             error_message = f'Сбой в работе программы: {error}'
-            if send_message(bot, error_message):
+            result = send_message(bot, error_message)
+            if result:
                 send_message(bot, error_message)
                 logger.error(error_message)
             time.sleep(RETRY_TIME)
